@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  #php and Nginx
+  web:
+    build: php_nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - db_mongo
+    volumes:
+      - - ./../../myweb/:/var/www/myweb
+    environment:
+      XDEBUG_CONFIG: "remote_host=172.17.0.1"
+      PHP_IDE_CONFIG: "serverName=gundamkid.docker"
+    container_name: gundamkid_web_stack
+  #mongo db  
+  db_mongo:
+    image: mongo:3.2
+    ports: 
+      - "27017:27017"
+    container_name: gundamkid_db_mongo
