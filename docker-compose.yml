@@ -6,17 +6,29 @@ services:
     build: php_nginx
     ports:
       - "80:80"
-    depends_on:
-      - db_mongo
+    links:
+      - db_mysql
+      - cache_redis
     volumes:
-      - - ./../../myweb/:/var/www/myweb
+      - ./../magento2/:/var/www/magento
     environment:
       XDEBUG_CONFIG: "remote_host=172.17.0.1"
       PHP_IDE_CONFIG: "serverName=gundamkid.docker"
-    container_name: gundamkid_web_stack
-  #mongo db  
-  db_mongo:
-    image: mongo:3.2
-    ports: 
-      - "27017:27017"
-    container_name: gundamkid_db_mongo
+    container_name: web_php_nginx
+  #mysql
+  db_sql:
+    image: mysql:5.7
+    ports:
+        - "3306:3306"
+    environment:
+        MYSQL_DATABASE: default  
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: dev
+        MYSQL_PASSWORD: 123456
+    container_name: db_my_sql
+  #redis:
+  redis:
+    image: redis:4.0
+    ports:
+      - "6379:6379"
+    container_name: cache_redis
