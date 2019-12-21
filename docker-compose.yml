@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   #php and Nginx
@@ -6,9 +6,23 @@ services:
     build: php_nginx
     ports:
       - "80:80"
+    links:
+      - gundamkid_mysql
     volumes:
       - ./../laravel/:/var/www/laravel/
     environment:
       XDEBUG_CONFIG: "remote_host=172.17.0.1"
       PHP_IDE_CONFIG: "serverName=gundamkid.docker"
     container_name: gundamkid_laravel_stack
+  #my_sql
+  database:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./../database/:/var/lib/mysql
+    environment:  
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123456
+    container_name: gundamkid_mysql
