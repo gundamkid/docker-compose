@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     links:
-      - gundamkid_mysql
+      - database
     volumes:
       - ./../laravel/:/var/www/laravel/
     environment:
